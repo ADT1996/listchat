@@ -25,14 +25,14 @@ class Controller {
     _screen = screen;
   }
 
-  void initScreen(BuildContext context) async {
+  void initScreen() async {
     if(!_inited) {
       _inited = true;
-      String roomId = ModalRoute.of(context).settings.arguments as String;
-      _service = UserService(context);
+      String roomId = ModalRoute.of(_screen.context).settings.arguments as String;
+      _service = UserService(_screen.context);
       Room room = await _service.getRoom(roomId);
       if(room == null) {
-        Navigator.of(context).pop(false);
+        Navigator.of(_screen.context).pop(false);
         return;
       }
       _screen.setState(() {

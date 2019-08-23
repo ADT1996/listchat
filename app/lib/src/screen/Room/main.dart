@@ -107,7 +107,7 @@ class RoomchatState extends State<RoomChat> {
   @override
   Widget build(BuildContext context) {
 
-    _controller.initScreen(context);
+    _controller.initScreen();
 
     return ThemeApp(
       isShowingBottomBar: false,
