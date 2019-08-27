@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:listchat/src/Common/Common.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
+import 'package:listchat/src/Common/Common.dart';
 import 'package:listchat/src/Model/Models.dart';
 import 'package:listchat/src/Navigator/StringScreen.dart';
 import 'package:listchat/src/Service/base.Service.dart';
@@ -22,14 +23,23 @@ class Controller {
     _screen = screen;
   }
 
-  void initScreen(BuildContext context) async {
+  void _onMessageFromServer() {
+    Socket.addEvent('message', (data) {
+      print(data);
+    });
+  }
+
+  Future<void> initScreen() async {
     if(!_inited) {
       try {
-        Common.user = ModalRoute.of(context).settings.arguments as User;
+        Common.user = ModalRoute.of(_screen.context).settings.arguments as User;
         Service.setToken(Common.user.getToken());
-        _service = UserService(context);
-        Socket.connect();
+        _service = UserService(_screen.context);
+        await Socket.connect();
+        _onMessageFromServer();
         final rooms = await _service.getRooms();
+        
+        Socket.emit('joinRooms', rooms.map((room) => room.getId()).toList());
         _screen.setState(() {
           this.rooms = rooms;
         });
@@ -41,11 +51,12 @@ class Controller {
     
   }
 
-  void Function() getActionTap( BuildContext context, String roomId) => () async {
-    FocusScope.of(context).requestFocus(new FocusNode());
-    dynamic result = await Navigator.of(context).pushNamed(ROOMCHAT , arguments: roomId);
+  void Function() getActionTap(String roomId) => () async {
+    FocusScope.of(_screen.context).requestFocus(new FocusNode());
+    dynamic result = await Navigator.of(_screen.context).pushNamed(ROOMCHAT , arguments: roomId);
     if(result != null && !result) {
       _inited = false;
+      await initScreen();
     }
   };
 

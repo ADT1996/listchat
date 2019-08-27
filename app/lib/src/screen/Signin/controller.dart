@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 import 'package:listchat/src/Navigator/StringScreen.dart';
 import 'package:listchat/src/Service/non-user.Service.dart';
@@ -28,6 +29,7 @@ class Controller {
 
     if(user == null) {
       print('login fail');
+      Toast.show('Email or password is wrong.',context, duration: 2, gravity: Toast.BOTTOM);
       return;
     }
 

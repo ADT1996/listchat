@@ -3,12 +3,9 @@ const app = express();
 const server = require('http').createServer(app);
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const io = require('socket.io')(server);
-const socket = require('./src/socket');
+const io = require('./src/socket')(server);
 const json = require('./src/asset/data.json');
 const ip = require('ip');
-
-socket(io);
 
 app.use(cors());
 app.use(bodyParser.json());

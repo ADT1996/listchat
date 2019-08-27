@@ -27,7 +27,7 @@ class HomeState extends State<Home> {
     Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
       child: OutlineButton(
-        onPressed: _controller.getActionTap(context, room.getId()),
+        onPressed: _controller.getActionTap(room.getId()),
         borderSide: BorderSide(
           color: Colors.grey[300],
           width: 0.5,
@@ -71,7 +71,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    _controller.initScreen(context);
+    _controller.initScreen();
 
     return ThemeApp(
       title: Text(Common.user.getFirstName()),

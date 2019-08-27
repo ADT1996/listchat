@@ -51,18 +51,19 @@ class ThemeAppState extends State<ThemeApp> {
 
   Widget _showBottomBar( bool isShowing) => !isShowing ? null :
   BottomNavigationBar(
-    items: <BottomNavigationBarItem>[
-      ..._list.map(
-        (elemnt) => BottomNavigationBarItem(
-          icon: Icon(elemnt['icon']),
-          title: Text(elemnt['screenName'])
-        )
-      )
-    ],
-    selectedItemColor: Colors.blue,
-    onTap: _onTap,
-    currentIndex: _currentIndex,
-  );
+    type: BottomNavigationBarType.fixed,
+      items: <BottomNavigationBarItem>[
+        ..._list.map(
+          (elemnt) => BottomNavigationBarItem(
+            icon: Icon(elemnt['icon']),
+            title: Text(elemnt['screenName']),
+          ),
+        ),
+      ],
+      selectedItemColor: Colors.blue,
+      onTap: _onTap,
+      currentIndex: _currentIndex,
+    );
 
   @override
   Widget build(BuildContext context) => Scaffold(
