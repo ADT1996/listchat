@@ -1,33 +1,30 @@
-const express = require('express');
-const app = express();
-const server = require('http').createServer(app);
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const io = require('./src/socket')(server);
-const json = require('./src/asset/data.json');
-const ip = require('ip');
+const packages = require('./src/config/packages');
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+require('./src/db/db')(packages, function(mongodb) {
 
-app.use('/nonuser', require('./src/Controller/nonUser.controller'));
-app.use('/user', function(req, res, next) {
-	const token = req.headers.authorization;
-	const user = json.users.find(user => token === user.token);
+	const app = packages.app;
+	const ip = packages.ip;
+	const cors = packages.cors;
+	const bodyParser = packages.bodyParser;
+	const server = packages.server;
+	const port = process.env.PORT || 3000;
 
-	if(user) {
-		req.headers.user = user;
-		next();
-	}
+	const repositories = packages.repository.repositoroes(mongodb, packages);
+	const service = packages.service.services(repositories, packages);
+	
+	require('./src/socket')(service, packages);
+	
+	app.use(cors());
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded());
 
-	res.status(401).send();
+	packages.controller.run(service, packages);
+	
+	server.listen(port, function() {
+		console.log(`Server running on server`);
+		console.log(`${ip.address('public','ipv4')}:${port}`);
+		console.log(`${ip.address('public','ipv6')}:${port}`);
+	});
+
 });
-app.use('/user', require('./src/Controller/user.controller'));
-const port = process.env.PORT || 3000;
 
-server.listen(port, function() {
-	console.log(`Server running on server`);
-	console.log(`${ip.address('public','ipv4')}:${port}`);
-	console.log(`${ip.address('public','ipv6')}:${port}`);
-});

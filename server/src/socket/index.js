@@ -1,8 +1,12 @@
-module.exports = function(server) {
+module.exports = function(service, packages) {
+
+     const server = packages.server;
 
      console.log('setting socket');
 
-     const io = require('socket.io')(server);
+     const io = packages.socketIO(server);
+
+     // const messageService = service.message;
 
      io.on('connection', function(socket) {
           console.log('connection');

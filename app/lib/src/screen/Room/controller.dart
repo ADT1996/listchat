@@ -94,8 +94,7 @@ class Controller {
     });
   }
 
-  void onDispose() {
-    // Socket.getSocket().off('message', _pushMessage);
+  void dispose() {
     Socket.off('message', _pushMessage);
   }
 

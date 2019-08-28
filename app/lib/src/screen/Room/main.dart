@@ -25,7 +25,7 @@ class RoomchatState extends State<RoomChat> {
 
   @override
   void dispose() {
-    _controller.onDispose();
+    _controller.dispose();
     super.dispose();
   }
 

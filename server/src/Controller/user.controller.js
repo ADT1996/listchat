@@ -1,24 +1,31 @@
-const route = require('express').Router();
-const UserService = require('../Service/user.service');
+module.exports = function(service, packages) {
+  
+  const route = packages.express.Router();
+  const roomService = service.room;
 
-const service = new UserService();
+  route.get('/getRooms', async function(req, res) {
+    const rooms = await roomService.getMulti();
+    if(!rooms) {
+      rooms = [];
+    }
+    res.status(200).jsonp(rooms);
+  });
 
+  route.get('/getroom/:roomId', function(req, res) {
+    const roomId = req.params.roomId;
+    const room = roomService.getSinglebyId(roomId);
+    if(room) {
+      res.status(200).jsonp(null);
+      return;
+    }
+    if(!room.members) {
+      room.members = [];
+    }
+    if(!room.messages) {
+      room.messages = [];
+    }
+    res.status(200).jsonp(room);
+  });
 
-route.get('/getRooms', function(req, res) {
-	service.getRooms(function(rooms) {
-		res.status(200).jsonp(rooms);
-	});
-});
-
-route.get('/getroom/:roomId', function(req, res) {
-	const roomId = req.params.roomId;
-	service.getRoom(roomId, function(room) {
-		if(room) {
-			res.status(200).jsonp(room);
-			return;
-		}
-		res.status(200).jsonp(null);
-	});
-});
-
-module.exports = route;
+  return route;
+}

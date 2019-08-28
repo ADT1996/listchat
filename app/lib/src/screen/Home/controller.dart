@@ -19,13 +19,19 @@ class Controller {
 
   UserService _service;
 
+  String _currentRoomId = '';
+
   Controller(HomeState screen) {
     _screen = screen;
   }
 
   void _onMessageFromServer() {
     Socket.addEvent('message', (data) {
-      print(data);
+      print('Home');
+      print(data['roomId']);
+      if(data['roomId'].toString().compareTo(_currentRoomId) == 0) {
+        print(data);
+      }
     });
   }
 
@@ -51,13 +57,18 @@ class Controller {
     
   }
 
-  void Function() getActionTap(String roomId) => () async {
+  void _navigateToRoom(String roomId) async {
     FocusScope.of(_screen.context).requestFocus(new FocusNode());
+    _currentRoomId = roomId;
     dynamic result = await Navigator.of(_screen.context).pushNamed(ROOMCHAT , arguments: roomId);
     if(result != null && !result) {
       _inited = false;
       await initScreen();
     }
+  }
+
+  void Function() getActionTap(String roomId) => () async {
+    _navigateToRoom(roomId);
   };
 
   void close() {
