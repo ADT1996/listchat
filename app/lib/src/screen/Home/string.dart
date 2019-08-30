@@ -1,2 +1,11 @@
 const String PEOPLE = '人';
 const String TITLE = 'ホム';
+const String ROOMNAME = '部屋の名前';
+const String SHOWMENU = 'メニュー';
+const String ADDROOM = '部屋を加える';
+const String JOINEDONLY = '参加した部屋のみを表示';
+const String SHOWALL = '全部部屋を表示';
+const String CANCEL = '取消';
+const String CREATE = '作る';
+const String PUBLIC = '社会';
+const String PRIVATE = '民間';

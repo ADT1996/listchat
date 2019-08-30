@@ -24,11 +24,17 @@ class ThemeApp extends StatefulWidget {
   final Widget child;
   final bool isShowingBottomBar;
   final bool isScroll;
+  final Widget floatingActionButton;
+  final Widget buttom;
+  final List<Widget> actions;
 
   ThemeApp({
     this.title,
     this.leading,
     this.backgroundColor,
+    this.floatingActionButton,
+    this.buttom,
+    this.actions,
     @required this.child,
     @required this.isShowingBottomBar,
     this.isScroll = true,
@@ -71,6 +77,8 @@ class ThemeAppState extends State<ThemeApp> {
       title: widget.title,
       backgroundColor: widget.backgroundColor,
       leading: widget.leading,
+      bottom: widget.buttom,
+      actions: widget.actions,
     ),
     body: GestureDetector(
       onTap: () { FocusScope.of(context).requestFocus(new FocusNode()); },
@@ -82,6 +90,7 @@ class ThemeAppState extends State<ThemeApp> {
         widget.child,
       ),
     ),
+    floatingActionButton: widget.floatingActionButton,
     bottomNavigationBar: _showBottomBar(widget.isShowingBottomBar),
   );
 }

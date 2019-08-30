@@ -38,7 +38,7 @@ class SigninState extends State<Signin> {
             prefixIcon: Icons.person_add,
             color: Colors.teal,
             horizontalPadding: 5,
-            onPressed: _controller.signUp(context),
+            onPressed: _controller.signUp(),
             highlightedBorderColor: Colors.teal[700],
           ),
           Button(
@@ -47,7 +47,7 @@ class SigninState extends State<Signin> {
             color: Colors.blue,
             highlightedBorderColor: Colors.blue[700],
             horizontalPadding: 5,
-            onPressed: _controller.login(context),
+            onPressed: _controller.login(),
           ),
         ],
       ),

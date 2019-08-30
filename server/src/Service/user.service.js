@@ -8,29 +8,29 @@ module.exports = function(repo, packages) {
 
 	class UserService extends packages.service.base {
 
-  	constructor(repo) {
+		constructor(repo) {
 			super(repo, 'user');
 		}
 
 		async login(email, password) {
-    	var userReturn = null;
-    	const passByte = aesjs.utils.utf8.toBytes(password);
-    	const aesCtr = new aesjs.ModeOfOperation.ctr(config.key, new aesjs.Counter(5));
-    	const byteEncrypt = aesCtr.encrypt(passByte);
-    	const passEncrypt = aesjs.utils.hex.fromBytes(byteEncrypt);
-    
-    	const user = await userRepo.getByEmailPassword(email, passEncrypt);
-    
-    	if(user) {
-      	userReturn = {...user};
+			var userReturn = null;
+			const passByte = aesjs.utils.utf8.toBytes(password);
+			const aesCtr = new aesjs.ModeOfOperation.ctr(config.key, new aesjs.Counter(5));
+			const byteEncrypt = aesCtr.encrypt(passByte);
+			const passEncrypt = aesjs.utils.hex.fromBytes(byteEncrypt);
+		
+			const user = await userRepo.getByEmailPassword(email, passEncrypt);
+		
+			if(user) {
+				userReturn = {...user};
 				userReturn.password = undefined;
 				userReturn.token = common.generateToken();
 				await tokenRepo.insertSingle({token: userReturn.token, userId: userReturn._id});
-    	}
-    
-    	return userReturn;
+			}
+		
+			return userReturn;
 		}
-	
+		
 		async signUp(user) {
 			const checkedUser = await userRepo.getSingle({email: user.email});
 
@@ -39,10 +39,10 @@ module.exports = function(repo, packages) {
 			}
 
 			var userReturn = null;
-    	const passByte = aesjs.utils.utf8.toBytes(user.password);
-    	const aesCtr = new aesjs.ModeOfOperation.ctr(config.key, new aesjs.Counter(5));
-    	const byteEncrypt = aesCtr.encrypt(passByte);
-    	const passEncrypt = aesjs.utils.hex.fromBytes(byteEncrypt);
+			const passByte = aesjs.utils.utf8.toBytes(user.password);
+			const aesCtr = new aesjs.ModeOfOperation.ctr(config.key, new aesjs.Counter(5));
+			const byteEncrypt = aesCtr.encrypt(passByte);
+			const passEncrypt = aesjs.utils.hex.fromBytes(byteEncrypt);
 			user.password = passEncrypt;
 			await userRepo.insertSingle(user);
 			return "REGISTED";
