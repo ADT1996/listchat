@@ -15,6 +15,7 @@ require('./src/db/db')(packages, function(mongodb) {
 	require('./src/socket')(service, packages);
 	
 	app.use(cors());
+	app.use(bodyParser.text());
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded());
 

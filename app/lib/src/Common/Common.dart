@@ -1,3 +1,4 @@
+import 'package:listchat/src/Common/enum.dart';
 import 'package:listchat/src/Model/Models.dart';
 import 'package:listchat/src/Service/service.Common.dart';
 
@@ -35,7 +36,7 @@ class Common {
         image: message[Parameter.IMAGE],
         memberId: message[Parameter.MEMBERID],
         message: message[Parameter.MESSAGE],
-        video: message[Parameter.VIDEO]
+        video: message[Parameter.VIDEO],
       );
     }).toList();
     return <Message>[...list];
@@ -49,7 +50,8 @@ class Common {
         bossId: room[Parameter.BOSSID],
         bossName: room[Parameter.BOSSNAME],
         members: room[Parameter.MEMBERS] == null ? null : objectToUsers(room[Parameter.MEMBERS]),
-        messages: room[Parameter.MESSAGES] == null ? null : objectToMessages(room[Parameter.MESSAGES])
+        messages: room[Parameter.MESSAGES] == null ? null : objectToMessages(room[Parameter.MESSAGES]),
+        mode: room[Parameter.MODEROOM] == 0 ? RoomMode.PUBLIC : RoomMode.PRIVATE
       );
     }).toList();
     return <Room>[...list];
@@ -62,7 +64,8 @@ class Common {
       bossId: data[Parameter.BOSSID],
       bossName: data[Parameter.BOSSNAME],
       members: objectToUsers(data[Parameter.MEMBERS]),
-      messages: data[Parameter.MESSAGES] == null ? null : objectToMessages(data[Parameter.MESSAGES])
+      messages: data[Parameter.MESSAGES] == null ? null : objectToMessages(data[Parameter.MESSAGES]),
+      mode: data[Parameter.MODEROOM] == 0 ? RoomMode.PUBLIC : RoomMode.PRIVATE,
     );
   }
 }

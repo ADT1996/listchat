@@ -23,7 +23,7 @@ class Parameter {
   /// Parameter
   static const String RESULT = 'result';
   /// Parameter
-  static const String ID = 'id';
+  static const String ID = '_id';
   /// Parameter
   static const String ROOMNAME = 'roomName';
   /// Parameter
@@ -44,4 +44,6 @@ class Parameter {
   static const String IMAGE = 'image';
   /// Parameter
   static const String MEMBERID = 'memberId';
+  ///Paremeter
+  static const String MODEROOM = 'mode';
 }

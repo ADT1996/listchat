@@ -1,7 +1,7 @@
 module.exports = function(db, packages) {
      class MessageRepo extends packages.repository.base {
           constructor(db) {
-               super(db, 'message');
+               super(db, 'message', packages);
           }
      }
 

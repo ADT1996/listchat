@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:listchat/src/Common/enum.dart';
 
 import 'package:listchat/src/Components/Component.dart';
 import 'package:listchat/src/Model/Models.dart';
@@ -36,20 +37,22 @@ class HomeState extends State<Home> {
           child: Text(STRING.ADDROOM),
         ),
         content: FormCreateRoom(
-          onCompleted: _controller.createRoom,
+          onCompleted: (dynamic room) { _controller.createRoom(room, context); },
+          onCancel: () { Navigator.of(context).pop(); },
         ),
       )
     );
   }
 
-  List<Widget> _getRooms(List<Room> rooms) => rooms.map((room) =>
-    Padding(
+  List<Widget> _getRooms(List<Room> rooms) => rooms.map((room) {
+    bool isPublic = room.getMode() == RoomMode.PUBLIC;
+    return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
       child: OutlineButton(
         onPressed: _controller.getActionTap(room.getId()),
         borderSide: BorderSide(
-          color: Colors.grey[300],
-          width: 0.5,
+          color: isPublic ? Colors.grey[500] : Colors.black,
+          width: isPublic ? 0.5 : 1,
           style: BorderStyle.solid,
         ),
         splashColor: Colors.transparent,
@@ -61,6 +64,7 @@ class HomeState extends State<Home> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              
               Text(room.getRoomName(),
                 style: TextStyle(
                   color: Colors.black,
@@ -84,8 +88,8 @@ class HomeState extends State<Home> {
           ),
         ),
       ),
-    )
-  ).toList();
+    );
+  }).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +135,6 @@ class HomeState extends State<Home> {
               PopupMenuItem(
                 value: STRING.JOINEDONLY,
                 child: _controller.showAll ? Text(STRING.SHOWALL) : Text(STRING.JOINEDONLY),
-
               )
             ];
           }

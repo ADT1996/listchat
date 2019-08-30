@@ -1,11 +1,12 @@
 class BaseRepo {
-	constructor(db, collectionName) {
+	constructor(db, collectionName, packages) {
 		this.db = db;
 		this.collectionName = collectionName;
+		this.packages = packages;
 	}
 
 	async getSingleById(id) {
-		const data = await this.db.db().collection(this.collectionName).findOne({ _id: id })
+		const data = await this.db.db().collection(this.collectionName).findOne({ _id: this.packages.mongodb.ObjectId(id) })
 			.then(
 				function(data) {
 					return data;
@@ -15,6 +16,7 @@ class BaseRepo {
 					throw err;
 				}
 			);
+		console.log(data);
 		return data;
 	}
 	
@@ -52,6 +54,7 @@ class BaseRepo {
 		await this.db.db().collection(this.collectionName).insertOne(data).then(
 			function(inserted) {
 				dataReturn._id = inserted.insertedId;
+				data._id = inserted.insertedId;
 			}
 		);
 		return dataReturn;
@@ -61,7 +64,7 @@ class BaseRepo {
 		const dataReturn = [...data];
 		await this.db.db().collection(this.collectionName).insert(data).then(
 			function(inserted) {
-				dataReturn._id = insertedId;
+				dataReturn._id = inserted.insertedId;
 			}
 		);
 		return dataReturn;

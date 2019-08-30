@@ -3,7 +3,7 @@ import 'package:listchat/src/Config/config.dart';
 
 class API {
 
-  static const String BASE_URI = 'http://$HOST';
+  static const String BASE_URI = '$HOST';
 
   static String _token;
 

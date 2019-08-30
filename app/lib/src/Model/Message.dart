@@ -24,10 +24,10 @@ class Message extends Model {
     _message = message;
   }
 
-  String getId() => _id;
-  String getMemberId() => _memberId;
-  String getImage() => _image;
-  String getAudio() => _audio;
-  String getVideo() => _video;
-  String getMessage() => _message;
+  String get id => _id;
+  String get memberId => _memberId;
+  String get image => _image;
+  String get audio => _audio;
+  String get video => _video;
+  String get message => _message;
 }

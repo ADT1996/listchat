@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:listchat/src/Common/Common.dart';
+import 'package:listchat/src/Common/enum.dart';
 import 'package:listchat/src/Model/Models.dart';
 import 'package:listchat/src/Navigator/StringScreen.dart';
 import 'package:listchat/src/Service/base.Service.dart';
@@ -24,7 +25,7 @@ class Controller {
 
   List<Room> viewRooms = <Room>[];
 
-  HomeState _screen;
+  HomeState _screen ;
 
   UserService _service;
 
@@ -64,14 +65,12 @@ class Controller {
     
   }
 
-  void _navigateToRoom(String roomId) async {
+  void _navigateToRoom(String roomId) {
     FocusScope.of(_screen.context).requestFocus(new FocusNode());
     _currentRoomId = roomId;
-    dynamic result = await Navigator.of(_screen.context).pushNamed(ROOMCHAT , arguments: roomId);
-    if(result != null && !result) {
-      _inited = false;
-      await initScreen();
-    }
+    Navigator.of(_screen.context).pushNamed(ROOMCHAT , arguments: roomId).then((result) {
+        _currentRoomId = '';
+    });
   }
 
   void Function() getActionTap(String roomId) => () async {
@@ -110,16 +109,25 @@ class Controller {
   void _showRooms() {
     List<Room> viewRooms = <Room>[];
     bool showAll = !this.showAll;
-    rooms.forEach((room) {
-      if( _roomName.isEmpty || room.getRoomName().contains(_roomName)) {
-        Room roomSearch = room.getMembers().firstWhere((User member){
-          return member.getId().compareTo(Common.user.getId()) == 0;
-        }) as Room;
-        if(roomSearch != null) {
-          viewRooms.add(roomSearch);
+    if(showAll) {
+      viewRooms = [...rooms];
+    } else {
+      rooms.forEach((room) {
+        if(room.getMode() == RoomMode.PRIVATE) {
+          viewRooms.add(room);
+        } else if( _roomName.isEmpty || room.getRoomName().contains(_roomName)) {
+          dynamic userSearch = room.getMembers().firstWhere((User member){
+            User user = Common.user;
+            return member.getId() == user.getId();
+          }, orElse: (){
+            return null;
+          });
+          if(userSearch != null) {
+            viewRooms.add(room);
+          }
         }
-      }
-    });
+      });
+    }
     _screen.setState((){
       this.showAll = showAll;
       this.viewRooms = viewRooms;
@@ -139,7 +147,10 @@ class Controller {
     }
   }
 
-  void createRoom(dynamic room) {
-    
+  void createRoom(Room room, BuildContext context) async {
+
+    _service.createRoom(room);
+
+    Navigator.of(context).pop();
   }
 }

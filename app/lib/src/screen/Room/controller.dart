@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listchat/src/API/API.dart';
 import 'package:listchat/src/Common/Common.dart';
+import 'package:listchat/src/Common/enum.dart';
 import 'package:listchat/src/Model/Models.dart';
 import 'package:listchat/src/Service/service.Common.dart';
 import 'package:listchat/src/Service/user.Service.dart';
@@ -20,6 +21,7 @@ class Controller {
     roomName: '',
     members: <User>[],
     messages: <Message>[],
+    mode: RoomMode.PUBLIC
   );
 
   RoomchatState _screen;
@@ -57,10 +59,6 @@ class Controller {
       String roomId = ModalRoute.of(_screen.context).settings.arguments as String;
       _service = UserService(_screen.context);
       Room room = await _service.getRoom(roomId);
-      if(room == null) {
-        Navigator.of(_screen.context).pop(false);
-        return;
-      }
       _onMessageFromServer();
       _screen.setState(() {
         this.room = room;

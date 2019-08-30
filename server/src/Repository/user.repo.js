@@ -1,7 +1,7 @@
 module.exports = function(db, packages) {
      class UserRepo extends packages.repository.base {
           constructor(db) {
-               super(db, 'user');
+               super(db, 'user', packages);
           }
 
           async getByEmailPassword(email, password) {

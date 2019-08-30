@@ -1,0 +1,1 @@
+enum RoomMode { PUBLIC, PRIVATE }

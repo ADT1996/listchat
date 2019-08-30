@@ -15,6 +15,7 @@ module.exports = {
      controller: {
           nonuser: require('../Controller/non-User.controller'),
           user: require('../Controller/user.controller'),
+          room: require('../Controller/room.controller'),
           run: require('../Controller'),
      },
      service: {

@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:listchat/src/Common/Common.dart';
 import 'package:listchat/src/API/user.API.dart';
+import 'package:listchat/src/Common/enum.dart';
 import 'package:listchat/src/Config/config.dart';
 import 'package:listchat/src/Model/Models.dart';
 import 'package:listchat/src/Service/base.Service.dart';
+import 'package:listchat/src/Service/service.Common.dart';
 
 class Socket {
 
@@ -16,7 +18,7 @@ class Socket {
   static Future<void> connect() async {
     try {
       if(!_conntected) {
-        _socket = await IO.SocketIOManager().createInstance(new IO.SocketOptions('http://$HOST/'));
+        _socket = await IO.SocketIOManager().createInstance(new IO.SocketOptions('$HOST/'));
         _socket.onDisconnect((data) {
           print('Disconnected');
         });
@@ -60,7 +62,7 @@ class UserService extends Service {
   }
 
   Future<List<Room>> getRooms() async {
-    final room = await _userApi.get('/getRooms');
+    final room = await _userApi.get('/room/getRooms');
 
     if(room != null) {
       final listRooms = Common.objectToRooms(room);
@@ -71,12 +73,24 @@ class UserService extends Service {
   }
 
   Future<Room> getRoom(String roomId) async {
-    final data = await _userApi.get('/getRoom/' + roomId);
+    final data = await _userApi.get('/room/getRoom/' + roomId);
     
     if(data != null) {
       return Common.objectToRoom(data);
     }
 
+    return null;
+  }
+
+  Future<void> createRoom(Room room) async {
+    final data = await _userApi.post('/room/create', {
+      Parameter.ROOMNAME: room.getRoomName(),
+      Parameter.MODEROOM: room.getMode() == RoomMode.PUBLIC ? 0.toString() : 1.toString(),
+    });
+
+    if(data != null) {
+      return Common.objectToRoom(data);
+    }
     return null;
   }
 }

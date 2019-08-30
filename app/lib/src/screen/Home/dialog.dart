@@ -1,15 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:listchat/src/Components/Component.dart';
+import 'package:listchat/src/Common/enum.dart';
+import 'package:listchat/src/Model/Models.dart';
 
 import './string.dart' as STRING;
 
 class FormCreateRoom extends StatefulWidget {
 
-  void Function(dynamic) onCompleted;
+  final void Function(Room) onCompleted;
+  final void Function() onCancel;
 
   FormCreateRoom({
-      @required this.onCompleted
+      @required this.onCompleted,
+      this.onCancel
     }) : super();
 
   @override
@@ -34,18 +39,18 @@ class _FormCreateRoomState extends State<FormCreateRoom> {
                 labelText: STRING.ROOMNAME,
                 onChanged: _controller.onChangedRoomName,
               ),
-              DropdownButton<int>(
+              DropdownButton<RoomMode>(
                 isExpanded: true,
                 onChanged: _controller.changeMode,
                 value: _controller.modeRoom,
-                items: <DropdownMenuItem<int>>[
+                items: <DropdownMenuItem<RoomMode>>[
                   DropdownMenuItem(
                     child: Text(STRING.PUBLIC),
-                    value: 0,
+                    value: RoomMode.PUBLIC,
                   ),
                   DropdownMenuItem(
                     child: Text(STRING.PRIVATE),
-                    value: 1
+                    value: RoomMode.PRIVATE,
                   )
                 ],
               ),
@@ -61,7 +66,7 @@ class _FormCreateRoomState extends State<FormCreateRoom> {
                     highlightedBorderColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     textColor: Theme.of(context).buttonColor,
-                    onPressed: () {},
+                    onPressed: _controller.onCancel,
                   ),
                   OutlineButton.icon(
                     icon: Icon(Icons.create, color: Theme.of(context).buttonColor,),
@@ -82,7 +87,7 @@ class _Controller {
 
   _FormCreateRoomState _screen;
 
-  int modeRoom = 0;
+  RoomMode modeRoom = RoomMode.PUBLIC;
 
   String roomName = '';
 
@@ -90,7 +95,7 @@ class _Controller {
     _screen = screen;
   }
 
-  void changeMode(int mode) {
+  void changeMode(RoomMode mode) {
     _screen.setState(() {
       modeRoom = mode;
     });
@@ -101,9 +106,15 @@ class _Controller {
   }
 
   void onCompleted() {
-    _screen.widget.onCompleted({
-      'roomName': roomName,
-      'mode': modeRoom
-    });
+    _screen.widget.onCompleted(Room(
+      roomName: roomName,
+      mode: modeRoom
+    ));
+  }
+
+  void onCancel() {
+    if(_screen.widget.onCancel != null) {
+      _screen.widget.onCancel();
+    }
   }
 }

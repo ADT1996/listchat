@@ -49,7 +49,7 @@ class RoomchatState extends State<RoomChat> {
                 width: 1
               ),
             ),
-            child: Text(message.getMessage(),
+            child: Text(message.message,
               softWrap: true,
               style: TextStyle(
                 color: Colors.white,
@@ -71,7 +71,7 @@ class RoomchatState extends State<RoomChat> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(_controller.room.getMembers().singleWhere((user) => user.getId() == message.getMemberId()).getFirstName()),
+          Text(_controller.room.getMembers().singleWhere((user) => user.getId() == message.memberId).getFirstName()),
           Container(
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
@@ -82,7 +82,7 @@ class RoomchatState extends State<RoomChat> {
                 width: 1
               ),
             ),
-            child: Text(message.getMessage(),
+            child: Text(message.message,
               softWrap: true,
               style: TextStyle(
                 color: Colors.black,
@@ -95,7 +95,7 @@ class RoomchatState extends State<RoomChat> {
   }
 
   Widget _buildMessageBubble(Message message) {
-    return message.getMemberId() == Common.user.getId() ? _buildMyMessageBubble(message) : _buildOtherPeopleMessageBubble(message);
+    return message.memberId == Common.user.getId() ? _buildMyMessageBubble(message) : _buildOtherPeopleMessageBubble(message);
   }
 
   Widget _buildButtons() {
