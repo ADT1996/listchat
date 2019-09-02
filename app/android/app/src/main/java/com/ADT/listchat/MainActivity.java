@@ -1,4 +1,4 @@
-package com.example.listchat;
+package com.ADT.listchat;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

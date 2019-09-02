@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "809015669161",
+    "firebase_url": "https://listchat-d9823.firebaseio.com",
+    "project_id": "listchat-d9823",
+    "storage_bucket": "listchat-d9823.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809015669161:android:0aff003aca4c164e",
+        "android_client_info": {
+          "package_name": "com.ADT.listchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809015669161-mgk32hhmoest012en92mf57acsnsir3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQBdBkzJFOY_1oTcuJ1nR7Nh2hVh-332w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809015669161-mgk32hhmoest012en92mf57acsnsir3h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
