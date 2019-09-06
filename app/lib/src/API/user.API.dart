@@ -36,13 +36,17 @@ class UserAPI extends API {
   }
 
   Future<dynamic> post(String uri, Map<String, dynamic> body) async {
-    final response = await http.post(_URI + uri, body: json.encode(body), headers: { Header.AUTHORIZATION: API.getToken() });
+    final response = await http.post(_URI + uri, body: json.encode(body), headers: {
+      Header.AUTHORIZATION: API.getToken(),
+      Header.CONTENT_TYPE: Header.APP_JSON
+    });
 
     switch(response.statusCode) {
       case 200:
         return json.decode(response.body);
       case 401:
-        Navigator.of(_context).pushReplacementNamed(SIGNINSCREEN);
+        Navigator.of(_context).pushNamedAndRemoveUntil(SIGNINSCREEN, (Route pre) => false);
+        Socket.close();
         break;
       default:
         return null;

@@ -13,4 +13,7 @@ class API {
 
 class Header {
   static const String AUTHORIZATION = 'authorization';
+  static const String CONTENT_TYPE = 'Content-Type';
+  static const APP_JSON = 'application/json';
+  static const APP_URLENCODED = 'application/x-www-form-urlencoded';
 }

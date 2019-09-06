@@ -1,4 +1,5 @@
 import 'package:adhara_socket_io/adhara_socket_io.dart' as IO;
+
 import 'package:flutter/cupertino.dart';
 
 import 'package:listchat/src/Common/Common.dart';
@@ -22,7 +23,12 @@ class Socket {
         _socket.onDisconnect((data) {
           print('Disconnected');
         });
-
+        _socket.onReconnect((data){
+          print('Reconnected');
+        });
+        _socket.onReconnecting((data){
+          print('Reconnecting');
+        });
         _socket.connect();
 
         _conntected = true;

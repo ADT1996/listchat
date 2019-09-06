@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:listchat/src/API/API.dart';
 import 'package:listchat/src/Common/Common.dart';
 import 'package:listchat/src/Common/enum.dart';
 import 'package:listchat/src/Model/Models.dart';
-import 'package:listchat/src/Service/service.Common.dart';
 import 'package:listchat/src/Service/user.Service.dart';
 
 import './main.dart';
 
 class Controller {
-
-  static bool _listenedMessage = false;
 
   bool _inited = false;
 

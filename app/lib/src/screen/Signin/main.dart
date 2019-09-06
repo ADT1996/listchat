@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:listchat/src/Components/Component.dart';
@@ -24,6 +26,27 @@ class SigninState extends State<Signin> {
   SigninState() : super() {
     _controller = Controller(this);
     _style = SigninStyle();
+  }
+
+  Widget _buildGoogleSignInSection() {
+    return OutlineButton(
+      borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
+      highlightedBorderColor: Colors.red,
+      splashColor: Color.lerp(Colors.redAccent, null, 0.9),
+      highlightColor: Colors.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Image.asset('google_logo.png', height: 28, width: 28,),
+          ),
+          Text('Sign in with Google', style: TextStyle(color: Colors.redAccent),)
+        ],
+        ),
+      onPressed: _controller.pressGoogleSignIn,
+    );
   }
 
   Widget _buildButtons(BuildContext context) {
@@ -99,6 +122,7 @@ class SigninState extends State<Signin> {
               child: _buildInputs()
             ),
           ),
+          _buildGoogleSignInSection()
         ],
       ),
     ),

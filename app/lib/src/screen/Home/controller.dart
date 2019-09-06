@@ -73,7 +73,7 @@ class Controller {
     });
   }
 
-  void Function() getActionTap(String roomId) => () async {
+  void Function() getActionTap(String roomId) => () {
     _navigateToRoom(roomId);
   };
 

@@ -40,7 +40,7 @@ class MyAppState extends State<MyApp> {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           primarySwatch: Colors.blue,
-          platform: TargetPlatform.iOS,
+          platform: TargetPlatform.android,
           buttonTheme: ButtonThemeData(buttonColor: Colors.blue),
           buttonColor: Colors.blue,
         ),

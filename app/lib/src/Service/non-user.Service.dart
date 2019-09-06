@@ -15,14 +15,12 @@ class NonUserService extends Service {
   }
 
   Future<User> login(String email, String password) async {
-    Map<String, String> body = {
-      Parameter.EMAIL: email,
-      Parameter.PASSWORD: password
-    };
-  
     try{
 
-      final data = await _nonUserAPI.post('/login', body);
+      final data = await _nonUserAPI.post('/login', {
+        Parameter.EMAIL: email,
+        Parameter.PASSWORD: password
+      });
 
       if(data == null)
         return null;
@@ -59,13 +57,9 @@ class NonUserService extends Service {
         Parameter.FIRSTNAME: firstName,
         Parameter.LASTNAME: lastName,
         Parameter.BIRTHDAY: birthday,
-        Parameter.GENDER: gender.toString(),
+        Parameter.GENDER: gender,
       }
     );
-
-    if(response.statusCode == 200) {
-      return json.decode(response.body)[Parameter.RESULT];
-    }
-    return null;
+    return response[Parameter.RESULT];
   }
 }

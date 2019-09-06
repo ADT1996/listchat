@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "809015669161",
-    "firebase_url": "https://listchat-d9823.firebaseio.com",
-    "project_id": "listchat-d9823",
-    "storage_bucket": "listchat-d9823.appspot.com"
+    "project_number": "785081858688",
+    "firebase_url": "https://listchat-5e9fc.firebaseio.com",
+    "project_id": "listchat-5e9fc",
+    "storage_bucket": "listchat-5e9fc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:809015669161:android:0aff003aca4c164e",
+        "mobilesdk_app_id": "1:785081858688:android:3fae8ff9e64c9dc23bc465",
         "android_client_info": {
           "package_name": "com.ADT.listchat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "809015669161-mgk32hhmoest012en92mf57acsnsir3h.apps.googleusercontent.com",
+          "client_id": "785081858688-h8jjvtsm2us0uhtga7i19qhm49d1ro7t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ADT.listchat",
+            "certificate_hash": "06f2f80ea37cb70c4c46970ab3849e953b2a40f4"
+          }
+        },
+        {
+          "client_id": "785081858688-6mmkj4ndsdhrvhsh67oc9ktahfr6tkql.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCQBdBkzJFOY_1oTcuJ1nR7Nh2hVh-332w"
+          "current_key": "AIzaSyBzPngGCWtWe6CY1zy0btv1OJ7QQ_bsuFQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "809015669161-mgk32hhmoest012en92mf57acsnsir3h.apps.googleusercontent.com",
+              "client_id": "785081858688-6mmkj4ndsdhrvhsh67oc9ktahfr6tkql.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
