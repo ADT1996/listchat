@@ -5,13 +5,6 @@ module.exports = function(service, packages) {
 	const userController = packages.controller.user;
 	const roomController = packages.controller.room;
 
-	app.use(function(req, res, next) {
-		if( req.method === 'POST' && req.body) {
-			req.body = JSON.parse(req.body);
-		}
-		next();
-	})
-
      app.use('/auth', async function(req, res, next) {
           const token =  req.headers.authorization;
 		const userToken = await service.token.getSingle({token: token});

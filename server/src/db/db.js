@@ -5,6 +5,7 @@ module.exports = async function(packages, fn) {
      const mongo = new mongoClient(dbConnectionString, { useNewUrlParser: true, useUnifiedTopology: true });
      const mongodb = await mongo.connect(function(err, mongodb){
           if(err) {
+               console.error('Starting is fail.', err);
                throw err;
           }
           fn(mongodb);
