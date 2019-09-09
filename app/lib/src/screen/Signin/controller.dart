@@ -34,25 +34,27 @@ class Controller {
 
   void pressGoogleSignIn() {
     _googleSignIn.signIn().then((GoogleSignInAccount result) async {
-      print(result);
-      // if(result != null) {
-      //   final GoogleSignInAuthentication auth = await result.authentication;
-      //   final AuthCredential credential = GoogleAuthProvider.getCredential(
-      //     accessToken: auth.accessToken,
-      //     idToken: auth.idToken
-      //   );
-      //   final FirebaseUser user =  (await _auth.signInWithCredential(credential)).user;
-      //   assert(user.email != null);
-      //   assert(user.displayName != null);
-      //   // assert(!user.isAnonymous);
-      //   assert(await user.getIdToken() != null);
+      final GoogleSignInAuthentication auth = await result.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: auth.accessToken,
+        idToken: auth.idToken
+      );
+      final FirebaseUser user =  (await _auth.signInWithCredential(credential)).user;
+      assert(user.email != null);
+      assert(user.displayName != null);
+      // assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
 
-      //   final FirebaseUser currentUser =await _auth.currentUser();
-      //   assert(user.uid == currentUser.uid);
-      // } else {
-      //   Toast.show('Google sign in fail', _screen.context, duration: 3, backgroundColor: Color.fromRGBO(0, 0, 0, 0.5));
-      // }
-    }).catchError((error) {
+      final FirebaseUser currentUser = await _auth.currentUser();
+      assert(user.uid == currentUser.uid);
+      Toast.show('Login completed', _screen.context, duration: 5);
+      return currentUser;
+    },
+    onError: (error) {
+      print(error);
+      Toast.show('Login fail', _screen.context, duration: 5);
+    }
+    ).catchError((error) {
       Toast.show('Exception', _screen.context, duration: 5);
       throw error;
     });

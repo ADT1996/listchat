@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "785081858688-f4sdhrtllm9kqf246vipdhgb70ikqimq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ADT.listchat",
+            "certificate_hash": "061472a38633c459f746dd530b677b31357c278b"
+          }
+        },
+        {
           "client_id": "785081858688-h8jjvtsm2us0uhtga7i19qhm49d1ro7t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -29,14 +37,14 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBzPngGCWtWe6CY1zy0btv1OJ7QQ_bsuFQ"
+          "current_key": "AIzaSyDrl9Zat70JW9Ippd-kCVKJ54LxE7xn4tQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "785081858688-6mmkj4ndsdhrvhsh67oc9ktahfr6tkql.apps.googleusercontent.com",
+              "client_id": "785081858688-i24rmrpstrnohiqqhdbc7noumb83o2cf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
