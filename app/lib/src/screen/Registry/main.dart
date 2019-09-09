@@ -88,6 +88,7 @@ class RegistryState extends State<Registry> {
 
   @override
   Widget build(BuildContext context) => ThemeApp(
+    isLoading: false,
     isShowingBottomBar: false,
     title: Text(STRING.TITLE),
     child: Center(

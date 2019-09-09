@@ -174,6 +174,7 @@ class RoomchatState extends State<RoomChat> {
     _controller.initScreen();
 
     return ThemeApp(
+      isLoading: false,
       isShowingBottomBar: false,
       isScroll: false,
       title: Text(_controller.room.getRoomName()),

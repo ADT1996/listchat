@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "785081858688-krebp80rnv42js692sg4m7jjgoo9ub9q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ADT.listchat",
+            "certificate_hash": "199fe29a0e78eddc68b4339346e16540d60cfccc"
+          }
+        },
+        {
           "client_id": "785081858688-f4sdhrtllm9kqf246vipdhgb70ikqimq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

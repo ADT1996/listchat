@@ -98,6 +98,7 @@ class HomeState extends State<Home> {
     _controller.initScreen();
 
     return ThemeApp(
+      isLoading: false,
       isShowingBottomBar: true,
       isScroll: false,
       title: Row(

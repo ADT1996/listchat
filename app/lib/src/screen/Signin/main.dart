@@ -109,6 +109,7 @@ class SigninState extends State<Signin> {
 
   @override
   Widget build(BuildContext context) => ThemeApp(
+    isLoading: _controller.isLoading,
     title: Text(STRING.TITLE),
     isShowingBottomBar: false,
     child: Center (

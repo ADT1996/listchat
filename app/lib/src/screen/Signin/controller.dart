@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +15,9 @@ import 'package:listchat/src/Model/Models.dart';
 import './main.dart';
 
 class Controller {
+
+  bool isLoading = false;
+
   SigninState _screen;
 
   String email = '';
@@ -33,28 +38,40 @@ class Controller {
   void onchangedPassword(String password) => this.password = password;
 
   void pressGoogleSignIn() {
-    _googleSignIn.signIn().then((GoogleSignInAccount result) async {
-      final GoogleSignInAuthentication auth = await result.authentication;
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: auth.accessToken,
-        idToken: auth.idToken
-      );
-      final FirebaseUser user =  (await _auth.signInWithCredential(credential)).user;
-      assert(user.email != null);
-      assert(user.displayName != null);
-      // assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
+    _googleSignIn.signIn().then((GoogleSignInAccount result) {
+      _screen.setState((){
+        isLoading = true;
+      });
+      result.authentication.then((GoogleSignInAuthentication auth) async {
+        final AuthCredential credential = GoogleAuthProvider.getCredential(
+          accessToken: auth.accessToken,
+          idToken: auth.idToken
+        );
+        final FirebaseUser user =  (await _auth.signInWithCredential(credential)).user;
+        assert(user.email != null);
+        assert(user.displayName != null);
+        assert(!user.isAnonymous);
+        assert(await user.getIdToken() != null);
 
-      final FirebaseUser currentUser = await _auth.currentUser();
-      assert(user.uid == currentUser.uid);
-      Toast.show('Login completed', _screen.context, duration: 5);
-      return currentUser;
+        final FirebaseUser currentUser = await _auth.currentUser();
+        assert(user.uid == currentUser.uid);
+        Toast.show('Hello ${currentUser.displayName}', _screen.context, duration: 5);
+        _screen.setState((){
+        isLoading = false;
+      });
+        return currentUser;
+      });
     },
     onError: (error) {
+      _screen.setState((){
+        isLoading = false;
+      });
       print(error);
       Toast.show('Login fail', _screen.context, duration: 5);
-    }
-    ).catchError((error) {
+    }).catchError((error) {
+      _screen.setState((){
+        isLoading = false;
+      });
       Toast.show('Exception', _screen.context, duration: 5);
       throw error;
     });

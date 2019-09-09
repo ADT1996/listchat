@@ -28,6 +28,7 @@ dependencies:
   scoped_model: ^1.0.1
   google_sign_in:
   shared_preferences: ^0.5.3+4
+  flutter_spinkit: "^4.0.0"
   flutter:
     sdk: flutter
 
