@@ -1,18 +1,13 @@
+import 'package:encrypt/encrypt.dart';
+
 import 'package:listchat/src/Common/enum.dart';
 import 'package:listchat/src/Model/Models.dart';
 import 'package:listchat/src/Service/service.Common.dart';
+import 'package:listchat/src/Config/config.dart' as config;
 
 class Common {
 
-  static User user = User(
-    birthday: null,
-    email: '',
-    firstName: '',
-    gender: false,
-    id: '',
-    lastName: '',
-    token: ''
-  );
+  static dynamic user = null;
 
   static List<User> objectToUsers(dynamic data) {
     List<dynamic> list = data.map((user) {
@@ -67,5 +62,35 @@ class Common {
       messages: data[Parameter.MESSAGES] == null ? null : objectToMessages(data[Parameter.MESSAGES]),
       mode: data[Parameter.MODEROOM] == 0 ? RoomMode.PUBLIC : RoomMode.PRIVATE,
     );
+  }
+
+  static User objectToUser(dynamic data) {
+    return User(
+        id: data[Parameter.ID],
+        email: data[Parameter.EMAIL],
+        firstName: data[Parameter.FIRSTNAME],
+        lastName: data[Parameter.LASTNAME],
+        birthday: data[Parameter.BIRTHDAY] != null ? DateTime.parse(data[Parameter.BIRTHDAY]) : null,
+        gender: data[Parameter.GENDER] as bool,
+      );
+  }
+
+  static String encryptString(String string) {
+
+    try {
+
+      final String keyString = config.key.map((number) => String.fromCharCode(number)).join('');
+      final String ivString = config.iv.map((number) => String.fromCharCode(number)).join('');
+
+      final Key key = Key.fromUtf8(keyString);
+      final IV iv = IV.fromUtf8(ivString);
+
+      final Encrypter aes = Encrypter(AES(key, mode: AESMode.cbc));
+      final Encrypted enscrypted = aes.encrypt(string, iv: iv);
+      String enscyptedString = enscrypted.base16;
+      return enscyptedString;
+    } catch(err) {
+      throw err;
+    }
   }
 }

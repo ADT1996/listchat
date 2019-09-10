@@ -11,8 +11,6 @@ import './main.dart';
 import './string.dart' as STRING;
 
 class Controller {
-
-  bool _inited = false;
   bool showAll = true;
 
   int modeRoom = 0;
@@ -44,25 +42,24 @@ class Controller {
   }
 
   Future<void> initScreen() async {
-    if(!_inited) {
-      try {
-        Common.user = ModalRoute.of(_screen.context).settings.arguments as User;
-        Service.setToken(Common.user.getToken());
+    try {
+      Common.user = ModalRoute.of(_screen.context).settings.arguments;
+      if(Common.user is User) {
+        User user = Common.user;
+        Service.setToken(user.getToken());
         _service = UserService(_screen.context);
         await Socket.connect();
         _onMessageFromServer();
         final rooms = await _service.getRooms();
         this.rooms = rooms;
         Socket.emit('joinRooms', rooms.map((room) => room.getId()).toList());
-        _screen.setState(() {
-          viewRooms = rooms;
-        });
-        _inited = true;
-      } catch(ex) {
-        print(ex);
       }
+      _screen.setState(() {
+        viewRooms = rooms;
+      });
+    } catch(ex) {
+      print(ex);
     }
-    
   }
 
   void _navigateToRoom(String roomId) {

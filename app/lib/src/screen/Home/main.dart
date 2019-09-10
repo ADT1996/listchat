@@ -93,10 +93,13 @@ class HomeState extends State<Home> {
   }).toList();
 
   @override
-  Widget build(BuildContext context) {
-
+  void initState() {
     _controller.initScreen();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return ThemeApp(
       isLoading: false,
       isShowingBottomBar: true,

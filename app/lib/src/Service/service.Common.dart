@@ -46,4 +46,6 @@ class Parameter {
   static const String MEMBERID = 'memberId';
   ///Paremeter
   static const String MODEROOM = 'mode';
+  ///Parameter
+  static const String USER = 'user';
 }

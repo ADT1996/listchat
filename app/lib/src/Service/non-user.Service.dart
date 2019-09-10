@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:listchat/src/API/non-User.API.dart';
+import 'package:listchat/src/Common/Common.dart';
 import 'package:listchat/src/Model/Models.dart';
 import 'package:listchat/src/Service/base.Service.dart';
 import './service.Common.dart';
@@ -17,7 +19,7 @@ class NonUserService extends Service {
   Future<User> login(String email, String password) async {
     try{
 
-      final data = await _nonUserAPI.post('/login', {
+      final data = await _nonUserAPI.post('/login', body: {
         Parameter.EMAIL: email,
         Parameter.PASSWORD: password
       });
@@ -50,16 +52,36 @@ class NonUserService extends Service {
     @required bool gender
   }) async {
 
-    final response = await _nonUserAPI.post('/signup',
-      {
-        Parameter.EMAIL: email,
-        Parameter.PASSWORD: password,
-        Parameter.FIRSTNAME: firstName,
-        Parameter.LASTNAME: lastName,
-        Parameter.BIRTHDAY: birthday,
-        Parameter.GENDER: gender,
-      }
-    );
+    final response = await _nonUserAPI.post('/signup', body: {
+      Parameter.EMAIL: email,
+      Parameter.PASSWORD: password,
+      Parameter.FIRSTNAME: firstName,
+      Parameter.LASTNAME: lastName,
+      Parameter.BIRTHDAY: birthday,
+      Parameter.GENDER: gender,
+    });
     return response[Parameter.RESULT];
+  }
+
+  Future<String> getCertKey() async {
+    final resposne = await _nonUserAPI.get('/getcertkey');
+    return resposne['key'];
+  }
+
+  Future<User> loginByFirebase(FirebaseUser user, String certKey) async {
+    final resposne = await _nonUserAPI.post('/loginByFirebase', body: {
+      Parameter.EMAIL: user.email,
+      Parameter.PHONE: user.phoneNumber,
+      Parameter.FIRSTNAME: user.displayName.split(' ')[0],
+      Parameter.LASTNAME: user.displayName.split(' ').skip(1).join(' '),
+      Parameter.BIRTHDAY: ''
+    },
+    headers: {
+      'certkey': certKey
+    });
+    if(resposne == null) {
+      return null;
+    }
+    return resposne[Parameter.RESULT] == 'OK' ? Common.objectToUser(resposne[Parameter.USER]) : null;
   }
 }

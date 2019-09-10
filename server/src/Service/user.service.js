@@ -47,6 +47,28 @@ module.exports = function(repo, packages) {
 			await userRepo.insertSingle(user);
 			return "REGISTED";
 		}
+
+		async login3thorgizaration(user) {
+			user.password = packages.common.generateToken();
+			const passByte = aesjs.utils.utf8.toBytes(user.password);
+			const aesCtr = new aesjs.ModeOfOperation.ctr(config.key, new aesjs.Counter(5));
+			const byteEncrypt = aesCtr.encrypt(passByte);
+			const passEncrypt = aesjs.utils.hex.fromBytes(byteEncrypt);
+			user.password = passEncrypt;
+			const userSearch = await userRepo.getSingle({
+				email: user.email
+			});
+
+			if(userSearch) {
+				userSearch.password = undefined;
+				return userSearch;
+			}
+
+			await userRepo.insertSingle(user);
+			user.password = undefined;
+			user.token = common.generateToken();
+			return user;
+		}
 	}
 
   return new UserService(repo);

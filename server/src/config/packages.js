@@ -25,5 +25,6 @@ module.exports = {
      repository: {
           base: require('../Repository/base.repo'),
           repositoroes: require('../Repository/index'),
-     }
+     },
+     certkes: {}, //using in generate certkey for sign in by 3th organization
 }
