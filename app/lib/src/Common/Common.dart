@@ -6,11 +6,11 @@ import 'package:listchat/src/Service/service.Common.dart';
 import 'package:listchat/src/Config/config.dart' as config;
 
 class Common {
+  static User user;
 
-  static dynamic user = null;
-
-  static List<User> objectToUsers(dynamic data) {
-    List<dynamic> list = data.map((user) {
+  static List<User> objectToUsers(List<dynamic> data) {
+    print(data);
+    List<User> list = data.map<User>((user) {
       return User(
         id: user[Parameter.ID],
         email: user[Parameter.EMAIL],
@@ -20,7 +20,7 @@ class Common {
         gender: user[Parameter.GENDER] as bool,
       );
     }).toList();
-    return <User>[...list];
+    return list;
   }
 
   static List<Message> objectToMessages(dynamic data) {
@@ -40,14 +40,19 @@ class Common {
   static List<Room> objectToRooms(dynamic data) {
     List<dynamic> list = data.map((room) {
       return Room(
-        id: room[Parameter.ID],
-        roomName: room[Parameter.ROOMNAME],
-        bossId: room[Parameter.BOSSID],
-        bossName: room[Parameter.BOSSNAME],
-        members: room[Parameter.MEMBERS] == null ? null : objectToUsers(room[Parameter.MEMBERS]),
-        messages: room[Parameter.MESSAGES] == null ? null : objectToMessages(room[Parameter.MESSAGES]),
-        mode: room[Parameter.MODEROOM] == 0 ? RoomMode.PUBLIC : RoomMode.PRIVATE
-      );
+          id: room[Parameter.ID],
+          roomName: room[Parameter.ROOMNAME],
+          bossId: room[Parameter.BOSSID],
+          bossName: room[Parameter.BOSSNAME],
+          members: room[Parameter.MEMBERS] == null
+              ? null
+              : objectToUsers(room[Parameter.MEMBERS]),
+          messages: room[Parameter.MESSAGES] == null
+              ? null
+              : objectToMessages(room[Parameter.MESSAGES]),
+          mode: room[Parameter.MODEROOM] == 0
+              ? RoomMode.PUBLIC
+              : RoomMode.PRIVATE);
     }).toList();
     return <Room>[...list];
   }
@@ -59,28 +64,32 @@ class Common {
       bossId: data[Parameter.BOSSID],
       bossName: data[Parameter.BOSSNAME],
       members: objectToUsers(data[Parameter.MEMBERS]),
-      messages: data[Parameter.MESSAGES] == null ? null : objectToMessages(data[Parameter.MESSAGES]),
+      messages: data[Parameter.MESSAGES] == null
+          ? null
+          : objectToMessages(data[Parameter.MESSAGES]),
       mode: data[Parameter.MODEROOM] == 0 ? RoomMode.PUBLIC : RoomMode.PRIVATE,
     );
   }
 
   static User objectToUser(dynamic data) {
     return User(
-        id: data[Parameter.ID],
-        email: data[Parameter.EMAIL],
-        firstName: data[Parameter.FIRSTNAME],
-        lastName: data[Parameter.LASTNAME],
-        birthday: data[Parameter.BIRTHDAY] != null ? DateTime.parse(data[Parameter.BIRTHDAY]) : null,
-        gender: data[Parameter.GENDER] as bool,
-      );
+      id: data[Parameter.ID],
+      email: data[Parameter.EMAIL],
+      firstName: data[Parameter.FIRSTNAME],
+      lastName: data[Parameter.LASTNAME],
+      birthday: data[Parameter.BIRTHDAY] != null
+          ? DateTime.parse(data[Parameter.BIRTHDAY])
+          : null,
+      gender: data[Parameter.GENDER] as bool,
+    );
   }
 
   static String encryptString(String string) {
-
     try {
-
-      final String keyString = config.key.map((number) => String.fromCharCode(number)).join('');
-      final String ivString = config.iv.map((number) => String.fromCharCode(number)).join('');
+      final String keyString =
+          config.key.map((number) => String.fromCharCode(number)).join('');
+      final String ivString =
+          config.iv.map((number) => String.fromCharCode(number)).join('');
 
       final Key key = Key.fromUtf8(keyString);
       final IV iv = IV.fromUtf8(ivString);
@@ -89,7 +98,7 @@ class Common {
       final Encrypted enscrypted = aes.encrypt(string, iv: iv);
       String enscyptedString = enscrypted.base16;
       return enscyptedString;
-    } catch(err) {
+    } catch (err) {
       throw err;
     }
   }

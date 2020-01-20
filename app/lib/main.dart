@@ -5,19 +5,19 @@ import 'package:listchat/src/Navigator/StringScreen.dart';
 import 'package:listchat/src/redux/reducer.dart';
 import 'package:redux/redux.dart';
 
+import 'src/redux/state.dart';
+
 void main() => runApp(MyApp());
-
-
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
-  MyAppState createState() => MyAppState(); 
+  MyAppState createState() => MyAppState();
 }
 
 class MyAppState extends State<MyApp> {
-
-  Store<dynamic> store = Store<dynamic>(reducer, initialState: {});
+  Store<ReduxState> store =
+      Store<ReduxState>(reducer, initialState: ReduxState(), distinct: true);
 
   MyAppState() : super();
 
@@ -40,12 +40,11 @@ class MyAppState extends State<MyApp> {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           primarySwatch: Colors.blue,
-          platform: TargetPlatform.android,
+          platform: TargetPlatform.iOS,
           buttonTheme: ButtonThemeData(buttonColor: Colors.blue),
           buttonColor: Colors.blue,
         ),
       ),
     );
   }
-
 }

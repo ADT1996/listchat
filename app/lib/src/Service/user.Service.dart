@@ -11,29 +11,29 @@ import 'package:listchat/src/Service/base.Service.dart';
 import 'package:listchat/src/Service/service.Common.dart';
 
 class Socket {
-
   static IO.SocketIO _socket;
-  
+
   static bool _conntected = false;
 
   static Future<void> connect() async {
     try {
-      if(!_conntected) {
-        _socket = await IO.SocketIOManager().createInstance(new IO.SocketOptions('$HOST/'));
+      if (!_conntected) {
+        _socket = await IO.SocketIOManager()
+            .createInstance(new IO.SocketOptions('$HOST/'));
         _socket.onDisconnect((data) {
           print('Disconnected');
         });
-        _socket.onReconnect((data){
+        _socket.onReconnect((data) {
           print('Reconnected');
         });
-        _socket.onReconnecting((data){
+        _socket.onReconnecting((data) {
           print('Reconnecting');
         });
         _socket.connect();
 
         _conntected = true;
       }
-    } catch(ex) {
+    } catch (ex) {
       print(ex);
     }
   }
@@ -47,20 +47,19 @@ class Socket {
   }
 
   static void close() async {
-    if(_conntected) {
+    if (_conntected) {
       await IO.SocketIOManager().clearInstance(_socket);
       // _socket.emitWithAck('close', null);
       _conntected = false;
     }
   }
+
   static void off(String eventName, Function fn) {
     _socket.off(eventName, fn);
   }
-
 }
 
 class UserService extends Service {
-
   UserAPI _userApi;
 
   UserService(BuildContext context) : super() {
@@ -70,7 +69,7 @@ class UserService extends Service {
   Future<List<Room>> getRooms() async {
     final room = await _userApi.get('/room/getRooms');
 
-    if(room != null) {
+    if (room != null) {
       final listRooms = Common.objectToRooms(room);
       return <Room>[...listRooms];
     }
@@ -80,21 +79,22 @@ class UserService extends Service {
 
   Future<Room> getRoom(String roomId) async {
     final data = await _userApi.get('/room/getRoom/' + roomId);
-    
-    if(data != null) {
+
+    if (data != null) {
       return Common.objectToRoom(data);
     }
 
     return null;
   }
 
-  Future<void> createRoom(Room room) async {
+  Future<Room> createRoom(Room room) async {
     final data = await _userApi.post('/room/create', {
       Parameter.ROOMNAME: room.getRoomName(),
-      Parameter.MODEROOM: room.getMode() == RoomMode.PUBLIC ? 0.toString() : 1.toString(),
+      Parameter.MODEROOM:
+          room.getMode() == RoomMode.PUBLIC ? 0.toString() : 1.toString(),
     });
 
-    if(data != null) {
+    if (data != null) {
       return Common.objectToRoom(data);
     }
     return null;

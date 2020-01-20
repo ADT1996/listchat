@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:listchat/src/Common/Common.dart';
+
 import 'package:listchat/src/Common/enum.dart';
 import 'package:listchat/src/Model/Models.dart';
 import 'package:listchat/src/Navigator/StringScreen.dart';
@@ -13,6 +13,10 @@ import './string.dart' as STRING;
 class Controller {
   bool showAll = true;
 
+  bool _init = false;
+
+  bool isLoading = false;
+
   int modeRoom = 0;
 
   String _currentRoomId = '';
@@ -23,7 +27,7 @@ class Controller {
 
   List<Room> viewRooms = <Room>[];
 
-  HomeState _screen ;
+  HomeState _screen;
 
   UserService _service;
 
@@ -35,44 +39,49 @@ class Controller {
     Socket.addEvent('message', (data) {
       print('Home');
       print(data['roomId']);
-      if(data['roomId'].toString().compareTo(_currentRoomId) == 0) {
+      if (data['roomId'].toString().compareTo(_currentRoomId) == 0) {
         print(data);
       }
     });
   }
 
   Future<void> initScreen() async {
-    try {
-      Common.user = ModalRoute.of(_screen.context).settings.arguments;
-      if(Common.user is User) {
-        User user = Common.user;
-        Service.setToken(user.getToken());
-        _service = UserService(_screen.context);
-        await Socket.connect();
-        _onMessageFromServer();
-        final rooms = await _service.getRooms();
-        this.rooms = rooms;
-        Socket.emit('joinRooms', rooms.map((room) => room.getId()).toList());
+    if (!_init) {
+      try {
+        User user = ModalRoute.of(_screen.context).settings.arguments;
+        if (user is User) {
+          Common.user = user;
+          Service.setToken(user.getToken());
+          _service = UserService(_screen.context);
+          await Socket.connect();
+          _onMessageFromServer();
+          final rooms = await _service.getRooms();
+          this.rooms = rooms;
+          Socket.emit('joinRooms', rooms.map((room) => room.getId()).toList());
+        }
+        _screen.setState(() {
+          viewRooms = rooms;
+        });
+        _init = true;
+      } catch (ex) {
+        print(ex);
       }
-      _screen.setState(() {
-        viewRooms = rooms;
-      });
-    } catch(ex) {
-      print(ex);
     }
   }
 
   void _navigateToRoom(String roomId) {
     FocusScope.of(_screen.context).requestFocus(new FocusNode());
     _currentRoomId = roomId;
-    Navigator.of(_screen.context).pushNamed(ROOMCHAT , arguments: roomId).then((result) {
-        _currentRoomId = '';
+    Navigator.of(_screen.context)
+        .pushNamed(ROOMCHAT, arguments: roomId)
+        .then((result) {
+      _currentRoomId = '';
     });
   }
 
   void Function() getActionTap(String roomId) => () {
-    _navigateToRoom(roomId);
-  };
+        _navigateToRoom(roomId);
+      };
 
   void close() {
     Socket.close();
@@ -82,11 +91,11 @@ class Controller {
     List<Room> roomSearch = <Room>[];
     _roomName = roomName;
     rooms.forEach((Room room) {
-      if(_roomName.isEmpty || room.getRoomName().contains(roomName)) {
+      if (_roomName.isEmpty || room.getRoomName().contains(roomName)) {
         roomSearch.add(room);
       }
     });
-    _screen.setState((){
+    _screen.setState(() {
       viewRooms = roomSearch;
     });
   }
@@ -94,11 +103,11 @@ class Controller {
   void searchRoomButton() {
     List<Room> roomSearch = <Room>[];
     rooms.forEach((Room room) {
-      if(room.getRoomName().contains(_roomName)) {
+      if (room.getRoomName().contains(_roomName)) {
         roomSearch.add(room);
       }
     });
-    _screen.setState((){
+    _screen.setState(() {
       viewRooms = roomSearch;
     });
   }
@@ -106,33 +115,34 @@ class Controller {
   void _showRooms() {
     List<Room> viewRooms = <Room>[];
     bool showAll = !this.showAll;
-    if(showAll) {
+    if (showAll) {
       viewRooms = [...rooms];
     } else {
+      User user = Common.user;
       rooms.forEach((room) {
-        if(room.getMode() == RoomMode.PRIVATE) {
+        if (room.getMode() == RoomMode.PRIVATE) {
           viewRooms.add(room);
-        } else if( _roomName.isEmpty || room.getRoomName().contains(_roomName)) {
-          dynamic userSearch = room.getMembers().firstWhere((User member){
-            User user = Common.user;
+        } else if (_roomName.isEmpty ||
+            room.getRoomName().contains(_roomName)) {
+          dynamic userSearch = room.getMembers().firstWhere((User member) {
             return member.getId() == user.getId();
-          }, orElse: (){
+          }, orElse: () {
             return null;
           });
-          if(userSearch != null) {
+          if (userSearch != null) {
             viewRooms.add(room);
           }
         }
       });
     }
-    _screen.setState((){
+    _screen.setState(() {
       this.showAll = showAll;
       this.viewRooms = viewRooms;
     });
   }
 
   void onTapMenu(String value) {
-    switch(value) {
+    switch (value) {
       case STRING.ADDROOM:
         _screen.showPopup();
         break;
@@ -145,9 +155,15 @@ class Controller {
   }
 
   void createRoom(Room room, BuildContext context) async {
-
-    _service.createRoom(room);
-
+    _service.createRoom(room).then((newRoom) {
+      _screen.setState(() {
+        this.rooms.add(newRoom);
+        this.isLoading = false;
+      });
+    });
+    _screen.setState(() {
+      this.isLoading = true;
+    });
     Navigator.of(context).pop();
   }
 }

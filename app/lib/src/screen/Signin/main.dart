@@ -19,7 +19,6 @@ class Signin extends StatefulWidget {
 }
 
 class SigninState extends State<Signin> {
-
   Controller _controller;
   SigninStyle _style;
 
@@ -40,11 +39,18 @@ class SigninState extends State<Signin> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Image.asset('google_logo.png', height: 28, width: 28,),
+            child: Image.asset(
+              'google_logo.png',
+              height: 28,
+              width: 28,
+            ),
           ),
-          Text('Sign in with Google', style: TextStyle(color: Colors.redAccent),)
+          Text(
+            STRING.GOOGLE_LOGIN,
+            style: TextStyle(color: Colors.redAccent),
+          )
         ],
-        ),
+      ),
       onPressed: _controller.pressGoogleSignIn,
     );
   }
@@ -82,26 +88,24 @@ class SigninState extends State<Signin> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-          child: TextInput(
-            onChanged: _controller.onChangedEmail,
-            color: Colors.blue,
-            // icon: Icons.alternate_email,
-            keyboardType: TextInputType.emailAddress,
-            labelText: STRING.EMAIL,
-          )
-        ),
+            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+            child: TextInput(
+              onChanged: _controller.onChangedEmail,
+              color: Colors.blue,
+              // icon: Icons.alternate_email,
+              keyboardType: TextInputType.emailAddress,
+              labelText: STRING.EMAIL,
+            )),
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-          child: TextInput(
-            onChanged: _controller.onchangedPassword,
-            color: Colors.blue,
-            // icon: Icons.security,
-            keyboardType: TextInputType.text,
-            labelText: STRING.PASSWORD,
-            obscureText: true,
-          )
-        ),
+            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+            child: TextInput(
+              onChanged: _controller.onchangedPassword,
+              color: Colors.blue,
+              // icon: Icons.security,
+              keyboardType: TextInputType.text,
+              labelText: STRING.PASSWORD,
+              obscureText: true,
+            )),
         _buildButtons(context)
       ],
     );
@@ -109,23 +113,21 @@ class SigninState extends State<Signin> {
 
   @override
   Widget build(BuildContext context) => ThemeApp(
-    isLoading: _controller.isLoading,
-    title: Text(STRING.TITLE),
-    isShowingBottomBar: false,
-    child: Center (
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text( 'Y Chat', style: _style.titleStyle),
-          Container(
-            child: Padding(
-              padding: EdgeInsets.all(5.0),
-              child: _buildInputs()
-            ),
+        isLoading: _controller.isLoading,
+        title: Text(STRING.TITLE),
+        isShowingBottomBar: false,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Y Chat', style: _style.titleStyle),
+              Container(
+                child: Padding(
+                    padding: EdgeInsets.all(5.0), child: _buildInputs()),
+              ),
+              _buildGoogleSignInSection()
+            ],
           ),
-          _buildGoogleSignInSection()
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }

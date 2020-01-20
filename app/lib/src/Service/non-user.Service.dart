@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:listchat/src/API/non-User.API.dart';
@@ -9,7 +7,6 @@ import 'package:listchat/src/Service/base.Service.dart';
 import './service.Common.dart';
 
 class NonUserService extends Service {
-
   NonUserAPI _nonUserAPI;
 
   NonUserService() : super() {
@@ -17,15 +14,11 @@ class NonUserService extends Service {
   }
 
   Future<User> login(String email, String password) async {
-    try{
+    try {
+      final data = await _nonUserAPI.post('/login',
+          body: {Parameter.EMAIL: email, Parameter.PASSWORD: password});
 
-      final data = await _nonUserAPI.post('/login', body: {
-        Parameter.EMAIL: email,
-        Parameter.PASSWORD: password
-      });
-
-      if(data == null)
-        return null;
+      if (data == null) return null;
 
       return User(
         id: data[Parameter.ID],
@@ -36,22 +29,18 @@ class NonUserService extends Service {
         lastName: data[Parameter.LASTNAME] as String,
         token: data[Parameter.TOKEN] as String,
       );
-
-    } catch(ex) {
-      print(ex);
+    } catch (ex) {
       return null;
     }
-}
+  }
 
-  Future<String> signUp({
-    @required String email,
-    @required String password,
-    @required String firstName,
-    @required String lastName,
-    @required String birthday,
-    @required bool gender
-  }) async {
-
+  Future<String> signUp(
+      {@required String email,
+      @required String password,
+      @required String firstName,
+      @required String lastName,
+      @required String birthday,
+      @required bool gender}) async {
     final response = await _nonUserAPI.post('/signup', body: {
       Parameter.EMAIL: email,
       Parameter.PASSWORD: password,
@@ -75,13 +64,14 @@ class NonUserService extends Service {
       Parameter.FIRSTNAME: user.displayName.split(' ')[0],
       Parameter.LASTNAME: user.displayName.split(' ').skip(1).join(' '),
       Parameter.BIRTHDAY: ''
-    },
-    headers: {
+    }, headers: {
       'certkey': certKey
     });
-    if(resposne == null) {
+    if (resposne == null) {
       return null;
     }
-    return resposne[Parameter.RESULT] == 'OK' ? Common.objectToUser(resposne[Parameter.USER]) : null;
+    return resposne[Parameter.RESULT] == 'OK'
+        ? Common.objectToUser(resposne[Parameter.USER])
+        : null;
   }
 }
